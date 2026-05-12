@@ -6,6 +6,7 @@
 	<array>
 		<string>com.apple.terminal</string>
 		<string>com.googlecode.iterm2</string>
+		<string>com.mitchellh.ghostty</string>
 	</array>
 </dict>
 </plist>

@@ -539,6 +539,11 @@
     NSString *terminalNewWindow =  [[NSBundle mainBundle] pathForResource:@"terminal-new-window" ofType:@"scpt"];
     NSString *terminalCurrentWindow = [[NSBundle mainBundle] pathForResource:@"terminal-current-window" ofType:@"scpt"];
     NSString *terminalNewTabDefault = [[NSBundle mainBundle] pathForResource:@"terminal-new-tab-default" ofType:@"scpt"];
+
+    //Set Paths to Ghostty AppleScripts
+    NSString *ghosttyNewWindow =  [[NSBundle mainBundle] pathForResource:@"ghostty-new-window" ofType:@"scpt"];
+    NSString *ghosttyCurrentWindow = [[NSBundle mainBundle] pathForResource:@"ghostty-current-window" ofType:@"scpt"];
+    NSString *ghosttyNewTabDefault = [[NSBundle mainBundle] pathForResource:@"ghostty-new-tab-default" ofType:@"scpt"];
     
     //Set Path to virtual with screen AppleScripts
     NSString *terminalVirtualWithScreen = [[NSBundle mainBundle] pathForResource:@"virtual-with-screen" ofType:@"scpt"];
@@ -563,6 +568,21 @@
         {
             [[NSWorkspace sharedWorkspace] openURL:url];
         }
+    //If the JSON file is set to use Ghostty
+    else if ( [terminalPref rangeOfString: @"ghostty"].location !=NSNotFound ) {
+        if ( [terminalWindow isEqualToString:@"new"] ) {
+            [self runScript:ghosttyNewWindow handler:handlerName parameters:passParameters];
+        }
+        if ( [terminalWindow isEqualToString:@"current"] ) {
+            [self runScript:ghosttyCurrentWindow handler:handlerName parameters:passParameters];
+        }
+        if ( [terminalWindow isEqualToString:@"tab"] ) {
+            [self runScript:ghosttyNewTabDefault handler:handlerName parameters:passParameters];
+        }
+        if ( [terminalWindow isEqualToString:@"virtual"] ) {
+            [self runScript:terminalVirtualWithScreen handler:handlerName parameters:passParameters];
+        }
+    }
     //If the JSON file is set to use iTerm
     else if ( [terminalPref rangeOfString: @"iterm"].location !=NSNotFound ) {
         

@@ -18,6 +18,9 @@
 		A124BA191D45572B00218F2F /* iTerm2-stable-current-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA161D45572B00218F2F /* iTerm2-stable-current-window.scpt */; };
 		A124BA1A1D45572B00218F2F /* iTerm2-stable-new-tab-default.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA171D45572B00218F2F /* iTerm2-stable-new-tab-default.scpt */; };
 		A124BA1B1D45572B00218F2F /* iTerm2-stable-new-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA181D45572B00218F2F /* iTerm2-stable-new-window.scpt */; };
+		A124BA1C1D45572B00218F2F /* ghostty-current-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA1F1D45572B00218F2F /* ghostty-current-window.scpt */; };
+		A124BA1D1D45572B00218F2F /* ghostty-new-tab-default.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA201D45572B00218F2F /* ghostty-new-tab-default.scpt */; };
+		A124BA1E1D45572B00218F2F /* ghostty-new-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A124BA211D45572B00218F2F /* ghostty-new-window.scpt */; };
 		A12D9BF31BCF2C73004F52A6 /* iTerm2-nightly-current-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A12D9BEA1BCF2C73004F52A6 /* iTerm2-nightly-current-window.scpt */; };
 		A12D9BF41BCF2C73004F52A6 /* iTerm2-nightly-new-tab-default.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A12D9BEB1BCF2C73004F52A6 /* iTerm2-nightly-new-tab-default.scpt */; };
 		A12D9BF51BCF2C73004F52A6 /* iTerm2-nightly-new-window.scpt in Resources */ = {isa = PBXBuildFile; fileRef = A12D9BEC1BCF2C73004F52A6 /* iTerm2-nightly-new-window.scpt */; };
@@ -48,6 +51,9 @@
 		A124BA161D45572B00218F2F /* iTerm2-stable-current-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-stable-current-window.scpt"; sourceTree = "<group>"; };
 		A124BA171D45572B00218F2F /* iTerm2-stable-new-tab-default.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-stable-new-tab-default.scpt"; sourceTree = "<group>"; };
 		A124BA181D45572B00218F2F /* iTerm2-stable-new-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-stable-new-window.scpt"; sourceTree = "<group>"; };
+		A124BA1F1D45572B00218F2F /* ghostty-current-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ghostty-current-window.scpt"; sourceTree = "<group>"; };
+		A124BA201D45572B00218F2F /* ghostty-new-tab-default.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ghostty-new-tab-default.scpt"; sourceTree = "<group>"; };
+		A124BA211D45572B00218F2F /* ghostty-new-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ghostty-new-window.scpt"; sourceTree = "<group>"; };
 		A12D9BEA1BCF2C73004F52A6 /* iTerm2-nightly-current-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-nightly-current-window.scpt"; sourceTree = "<group>"; };
 		A12D9BEB1BCF2C73004F52A6 /* iTerm2-nightly-new-tab-default.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-nightly-new-tab-default.scpt"; sourceTree = "<group>"; };
 		A12D9BEC1BCF2C73004F52A6 /* iTerm2-nightly-new-window.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTerm2-nightly-new-window.scpt"; sourceTree = "<group>"; };
@@ -120,6 +126,9 @@
 				A124BA161D45572B00218F2F /* iTerm2-stable-current-window.scpt */,
 				A124BA171D45572B00218F2F /* iTerm2-stable-new-tab-default.scpt */,
 				A124BA181D45572B00218F2F /* iTerm2-stable-new-window.scpt */,
+				A124BA1F1D45572B00218F2F /* ghostty-current-window.scpt */,
+				A124BA201D45572B00218F2F /* ghostty-new-tab-default.scpt */,
+				A124BA211D45572B00218F2F /* ghostty-new-window.scpt */,
 				A12D9BEA1BCF2C73004F52A6 /* iTerm2-nightly-current-window.scpt */,
 				A12D9BEB1BCF2C73004F52A6 /* iTerm2-nightly-new-tab-default.scpt */,
 				A12D9BEC1BCF2C73004F52A6 /* iTerm2-nightly-new-window.scpt */,
@@ -256,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A12D9BF61BCF2C73004F52A6 /* terminal-current-window.scpt in Resources */,
+				A124BA1C1D45572B00218F2F /* ghostty-current-window.scpt in Resources */,
 				A12D9BF31BCF2C73004F52A6 /* iTerm2-nightly-current-window.scpt in Resources */,
 				A1B7B9DD1DB53ED200809327 /* Localizable.strings in Resources */,
 				A12D9BF51BCF2C73004F52A6 /* iTerm2-nightly-new-window.scpt in Resources */,
@@ -267,12 +277,14 @@
 				0ADB3B0F178EF8DB004E9BB9 /* StatusIconAlt@2x.png in Resources */,
 				0ADB3B0E178EF8DB004E9BB9 /* StatusIcon@2x.png in Resources */,
 				A124BA191D45572B00218F2F /* iTerm2-stable-current-window.scpt in Resources */,
+				A124BA1D1D45572B00218F2F /* ghostty-new-tab-default.scpt in Resources */,
 				A12D9BF41BCF2C73004F52A6 /* iTerm2-nightly-new-tab-default.scpt in Resources */,
 				C149EC0E15D5214600B1F558 /* Credits.rtf in Resources */,
 				A12D9BF71BCF2C73004F52A6 /* terminal-new-tab-default.scpt in Resources */,
 				C149EC1415D5214600B1F558 /* MainMenu.xib in Resources */,
 				A124BA1B1D45572B00218F2F /* iTerm2-stable-new-window.scpt in Resources */,
 				A124BA1A1D45572B00218F2F /* iTerm2-stable-new-tab-default.scpt in Resources */,
+				A124BA1E1D45572B00218F2F /* ghostty-new-window.scpt in Resources */,
 				C159DC2815D5DE8000F5DE24 /* shuttle.icns in Resources */,
 				A12D9BF81BCF2C73004F52A6 /* terminal-new-window.scpt in Resources */,
 				7E74A7C61789CE2F0079E0D2 /* shuttle.default.json in Resources */,
