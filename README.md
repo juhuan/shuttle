@@ -12,12 +12,26 @@ A simple shortcut menu for macOS
 
 **Sidenote**: *Many people ask, so here's how I have [my terminal setup](https://github.com/fitztrev/shuttle/wiki/My-Terminal-Prompt).*
 
+## Requirements
+
+- macOS 13.0 (Ventura) or later.
+
+## Supported terminals
+
+Set the `terminal` field in `~/.shuttle.json` to one of:
+
+- `"Terminal.app"` — driven via AppleScript (unchanged).
+- `"iTerm"` — driven via the `iterm2://` URL scheme (no Apple Events permission needed).
+- `"Ghostty.app"` — driven via the `ghostty` CLI (no Apple Events permission needed).
+
 ## Installation
 
 1. Download [Shuttle](https://github.com/holywen/shuttle/releases)
 2. Copy to Applications
 
-This fork also supports Ghostty.app. Set `"terminal": "Ghostty.app"` in your Shuttle JSON settings to use it.
+## Building
+
+Run `./build.sh` to produce a DMG. Set the `APPLE_DEVELOPER_IDENTITY`, `APPLE_TEAM_ID`, `APPLE_NOTARY_USER`, and `APPLE_NOTARY_PASSWORD` environment variables to also sign and notarize the app. The same pipeline runs as `.github/workflows/objective-c-xcode.yml` on tagged commits.
 
 ## Help
 See the [Wiki](https://github.com/fitztrev/shuttle/wiki) pages. 

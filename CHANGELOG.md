@@ -5,15 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- The ability to open multiple, or same command(s) off one menu item. https://github.com/fitztrev/shuttle/issues/236
-- The ability to add a second json.config file 
-- The ability to add ```[---]``` in the name of a command to add a line seperator 
-- Adding a new apple script which will allow running commands in the background with screen
-- @philippetev Changes to iTerm applescripts to fix issues with settings in iTerm's Preferences/General
-- French translations by @anivon
-- @anivon localize Error parsing config message is JSON is invalid 
-- @blackadmin version typos in about window. 
-- @ChrisMoriarty add the ability to set the terminal window position and size
+
+### Modernization (2026-10-01)
+- **Breaking**: minimum deployment target raised to macOS 13.0 (Ventura).
+- Replaced the deprecated `LSSharedFileList` launch-at-login path with `SMAppService.mainApp`.
+- Split the single `AppDelegate` into testable modules: config source, JSON root object, SSH config parser, and menu tree builder.
+- Refactored terminal dispatch behind a `SHTerminalBackend` protocol:
+  - `Terminal.app` still driven via AppleScript.
+  - `iTerm` now dispatched via the `iterm2://` URL scheme (Apple Events entitlement removed).
+  - `Ghostty.app` now dispatched via its own `ghostty` CLI (Apple Events entitlement removed).
+- `virtual` mode now launches `screen -d -m` via `NSTask` instead of a bundled `.scpt`.
+- Removed iTerm2/Ghostty AppleScript bundles and their compile scripts.
+- Added a `ShuttleTests` unit-test target covering SSH parsing, menu building, config resolution, and terminal command normalization, plus a golden-menu regression fixture.
+- CI now runs `xcodebuild test`, and tagged builds are signed, notarized, stapled, and packaged into a DMG.
 
 ## [1.2.9] - 2016-10-18
 ### Added

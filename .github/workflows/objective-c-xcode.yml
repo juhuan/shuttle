@@ -1,30 +1,104 @@
-name: Xcode - Build and Analyze
+name: Build, Test and Release
 
 on:
   push:
     branches: [ "master" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
   build:
-    name: Build and analyse default scheme using xcodebuild command
+    name: Build, test and package
     runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set Default Scheme
+
+      - name: Run unit tests
         run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: Build
+          xcodebuild test \
+            -project Shuttle.xcodeproj \
+            -scheme Shuttle \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build unsigned Release (non-tag)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        run: |
+          xcodebuild \
+            -project Shuttle.xcodeproj \
+            -scheme Shuttle \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Import Developer ID certificate
+        if: startsWith(github.ref, 'refs/tags/')
         env:
-          scheme: ${{ 'default' }}
+          CERTIFICATE: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}
+          CERT_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          echo -n "$CERTIFICATE" | base64 --decode -o "$CERT_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+      - name: Build and sign Release (tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          DEVELOPMENT_TEAM: ${{ secrets.APPLE_TEAM_ID }}
+          IDENTITY: ${{ secrets.APPLE_DEVELOPER_IDENTITY }}
+          KEYCHAIN_PATH: $RUNNER_TEMP/app-signing.keychain-db
+        run: |
+          xcodebuild \
+            -project Shuttle.xcodeproj \
+            -scheme Shuttle \
+            -configuration Release \
+            -derivedDataPath build \
+            DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+            CODE_SIGN_IDENTITY="$IDENTITY" \
+            OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
+            build
+          APP_PATH="build/Build/Products/Release/Shuttle.app"
+          /usr/bin/ditto -c -k --keepParent "$APP_PATH" "$RUNNER_TEMP/Shuttle.zip"
+
+      - name: Notarize (tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          APPLE_NOTARY_USER: ${{ secrets.APPLE_NOTARY_USER }}
+          APPLE_NOTARY_PASSWORD: ${{ secrets.APPLE_NOTARY_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool submit "$RUNNER_TEMP/Shuttle.zip" \
+            --apple-id "$APPLE_NOTARY_USER" \
+            --password "$APPLE_NOTARY_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait
+
+      - name: Staple and package DMG (tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          APP_PATH="build/Build/Products/Release/Shuttle.app"
+          xcrun stapler staple "$APP_PATH"
+          DMG_TEMP="$RUNNER_TEMP/shuttle-dmg"
+          rm -rf "$DMG_TEMP"
+          mkdir -p "$DMG_TEMP"
+          cp -R "$APP_PATH" "$DMG_TEMP/"
+          ln -s /Applications "$DMG_TEMP/Applications"
+          hdiutil create -volname Shuttle -srcfolder "$DMG_TEMP" -ov -format UDZO Shuttle.dmg
+
+      - name: Upload DMG artifact (tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shuttle.dmg
+          path: Shuttle.dmg

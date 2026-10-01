@@ -1,0 +1,24 @@
+{
+  "terminal": "Terminal.app",
+  "open_in": "tab",
+  "show_ssh_config_hosts": true,
+  "hosts": [
+    { "name": "Alpha Leaf", "cmd": "echo alpha" },
+    { "name": "Zeta Leaf", "cmd": "echo zeta", "theme": "Homebrew", "title": "Zeta Tab", "inTerminal": "new" },
+    { "Group B": [
+      { "name": "Beta Leaf", "cmd": "echo beta" },
+      { "name": "Alpha Leaf B", "cmd": "echo beta2", "inTerminal": "current" }
+    ] },
+    { "Group A": [
+      { "name": "Deep Leaf", "cmd": "echo deep" }
+    ] },
+    { "[aaa]Sorted Group": [
+      { "name": "Marker Leaf", "cmd": "echo marker" }
+    ] },
+    { "[---]Divider Group": [
+      { "name": "Div Leaf", "cmd": "echo div" }
+    ] },
+    { "name": "[bbb]Sorted Leaf", "cmd": "echo sortedleaf" },
+    { "name": "[---]Divider Leaf", "cmd": "echo dividerleaf" }
+  ]
+}
