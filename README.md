@@ -33,6 +33,16 @@ Set the `terminal` field in `~/.shuttle.json` to one of:
 
 Run `./build.sh` to produce a DMG. Set the `APPLE_DEVELOPER_IDENTITY`, `APPLE_TEAM_ID`, `APPLE_NOTARY_USER`, and `APPLE_NOTARY_PASSWORD` environment variables to also sign and notarize the app. The same pipeline runs as `.github/workflows/objective-c-xcode.yml` on tagged commits.
 
+## Testing
+
+Run the `ShuttleTests` unit-test suite (SSH config parsing, menu building, config resolution, terminal command normalization, plus a golden-menu regression fixture):
+
+```bash
+xcodebuild test -project Shuttle.xcodeproj -scheme Shuttle -destination 'platform=macOS'
+```
+
+CI runs the same command on every push and pull request.
+
 ## Help
 See the [Wiki](https://github.com/fitztrev/shuttle/wiki) pages. 
 
