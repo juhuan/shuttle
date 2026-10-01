@@ -12,6 +12,8 @@ jobs:
   build:
     name: Build, test and package
     runs-on: macos-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -115,9 +117,9 @@ jobs:
           ln -s /Applications "$DMG_TEMP/Applications"
           hdiutil create -volname Shuttle -srcfolder "$DMG_TEMP" -ov -format UDZO Shuttle.dmg
 
-      - name: Upload DMG artifact (tag)
+      - name: Publish DMG to GitHub Release (tag)
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+        uses: softprops/action-gh-release@v2
         with:
-          name: Shuttle.dmg
-          path: Shuttle.dmg
+          files: Shuttle.dmg
+          generate_release_notes: true
