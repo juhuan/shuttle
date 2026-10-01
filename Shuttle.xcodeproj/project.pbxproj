@@ -30,6 +30,7 @@
 		B1000000000000000000000A /* SHVirtualBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000015 /* SHVirtualBackend.m */; };
 		B1000000000000000000000B /* SHLaunchAtLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000017 /* SHLaunchAtLogin.m */; };
 		C149EBFE15D5214600B1F558 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C149EBFD15D5214600B1F558 /* Cocoa.framework */; };
+		E1000000000000000000000F /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10000000000000000000008 /* ServiceManagement.framework */; };
 		C149EC0815D5214600B1F558 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C149EC0615D5214600B1F558 /* InfoPlist.strings */; };
 		C149EC0A15D5214600B1F558 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C149EC0915D5214600B1F558 /* main.m */; };
 		C149EC0E15D5214600B1F558 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C149EC0C15D5214600B1F558 /* Credits.rtf */; };
@@ -113,6 +114,7 @@
 		C10000000000000000000005 /* SHTerminalCommandTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHTerminalCommandTests.m; sourceTree = "<group>"; };
 		C10000000000000000000006 /* SHMenuBuilderGoldenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHMenuBuilderGoldenTests.m; sourceTree = "<group>"; };
 		C10000000000000000000007 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
+		C10000000000000000000008 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		C149EBF915D5214600B1F558 /* Shuttle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shuttle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C149EBFD15D5214600B1F558 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C149EC0015D5214600B1F558 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -135,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C149EBFE15D5214600B1F558 /* Cocoa.framework in Frameworks */,
+				E1000000000000000000000F /* ServiceManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
