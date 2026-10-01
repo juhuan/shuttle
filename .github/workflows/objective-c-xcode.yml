@@ -58,7 +58,7 @@ jobs:
           path: Shuttle.dmg
 
       - name: Import Developer ID certificate
-        if: startsWith(github.ref, 'refs/tags/')
+        if: ${{ startsWith(github.ref, 'refs/tags/') && secrets.APPLE_DEVELOPER_CERTIFICATE != '' }}
         env:
           CERTIFICATE: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_PASSWORD }}
@@ -74,7 +74,7 @@ jobs:
           security list-keychain -d user -s "$KEYCHAIN_PATH"
 
       - name: Build and sign Release (tag)
-        if: startsWith(github.ref, 'refs/tags/')
+        if: ${{ startsWith(github.ref, 'refs/tags/') && secrets.APPLE_DEVELOPER_CERTIFICATE != '' }}
         env:
           DEVELOPMENT_TEAM: ${{ secrets.APPLE_TEAM_ID }}
           IDENTITY: ${{ secrets.APPLE_DEVELOPER_IDENTITY }}
@@ -92,8 +92,20 @@ jobs:
           APP_PATH="build/Build/Products/Release/Shuttle.app"
           /usr/bin/ditto -c -k --keepParent "$APP_PATH" "$RUNNER_TEMP/Shuttle.zip"
 
+      - name: Build unsigned Release (tag)
+        if: ${{ startsWith(github.ref, 'refs/tags/') && secrets.APPLE_DEVELOPER_CERTIFICATE == '' }}
+        run: |
+          xcodebuild \
+            -project Shuttle.xcodeproj \
+            -scheme Shuttle \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
       - name: Notarize (tag)
-        if: startsWith(github.ref, 'refs/tags/')
+        if: ${{ startsWith(github.ref, 'refs/tags/') && secrets.APPLE_DEVELOPER_CERTIFICATE != '' }}
         env:
           APPLE_NOTARY_USER: ${{ secrets.APPLE_NOTARY_USER }}
           APPLE_NOTARY_PASSWORD: ${{ secrets.APPLE_NOTARY_PASSWORD }}
@@ -105,11 +117,15 @@ jobs:
             --team-id "$APPLE_TEAM_ID" \
             --wait
 
-      - name: Staple and package DMG (tag)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Staple (tag, signed only)
+        if: ${{ startsWith(github.ref, 'refs/tags/') && secrets.APPLE_DEVELOPER_CERTIFICATE != '' }}
+        run: |
+          xcrun stapler staple "build/Build/Products/Release/Shuttle.app"
+
+      - name: Package DMG (tag)
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           APP_PATH="build/Build/Products/Release/Shuttle.app"
-          xcrun stapler staple "$APP_PATH"
           DMG_TEMP="$RUNNER_TEMP/shuttle-dmg"
           rm -rf "$DMG_TEMP"
           mkdir -p "$DMG_TEMP"
