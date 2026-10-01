@@ -1,0 +1,24 @@
+# top comment (ignored)
+Host github.com
+    User user1
+    Hostname github.com
+
+Host *.wildcard.example.com
+    User w
+
+Host dev01.example.net
+    # shuttle.name = Work/dev01 (my dev box)
+    Hostname dev01.example.net
+
+Host Clients/client-a.example.com
+    User username
+    Hostname client-a.example.com
+
+Host Clients/client-b.example.com
+    User username
+    Hostname client-b.example.com
+
+Host .hidden.example.com
+    User h
+
+Include ssh_config.d/included.conf
