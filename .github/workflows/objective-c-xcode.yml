@@ -6,6 +6,7 @@ on:
     tags: [ "v*" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -35,6 +36,24 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             build
+
+      - name: Package and upload unsigned DMG (non-tag)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        run: |
+          APP_PATH="build/Build/Products/Release/Shuttle.app"
+          DMG_TEMP="$RUNNER_TEMP/shuttle-dmg"
+          rm -rf "$DMG_TEMP"
+          mkdir -p "$DMG_TEMP"
+          cp -R "$APP_PATH" "$DMG_TEMP/"
+          ln -s /Applications "$DMG_TEMP/Applications"
+          hdiutil create -volname Shuttle -srcfolder "$DMG_TEMP" -ov -format UDZO Shuttle.dmg
+
+      - name: Upload unsigned DMG artifact (non-tag)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shuttle-unsigned.dmg
+          path: Shuttle.dmg
 
       - name: Import Developer ID certificate
         if: startsWith(github.ref, 'refs/tags/')
